@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+
+{% include "orders/order_summary_short.html" with order=order %}
+
+{% if order.status == 'paid' %}
+<p><b>Please <a href="#" onclick="javascript:window.print()">print</a> for your records</b></p>
+{% endif %}
+{% endblock %}
+

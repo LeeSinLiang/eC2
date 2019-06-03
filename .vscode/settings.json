@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "env\\Scripts\\python.exe",
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": false,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "files.associations": {
+        "**/templates/*.html": "django-html",
+        "**/templates/*": "django-txt",
+        "**/requirements{/**,*}.{txt,in}": "pip-requirements"
+    },
+}

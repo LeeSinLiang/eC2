@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-sm-8 col-sm-offset-2 textcenter">
+    {% if object_list|length <= 0 %} <div class='col-sm-6 col-sm-offset-3 text-center'>
+        <p class='lead'>
+            You do not currently have wishlist.
+        </p>
+
+</div>
+
+{% else %}
+<h1>Your WishList</h1>
+
+
+<table class='table'>
+    <th>Product</th>
+    <th>Price</th>
+    <th>Remove</th>
+    {% for object in object_list %}
+    <tr>
+        <td>
+            {{ object }}
+        </td>
+        <td>
+            {% if object.product.variation_set.first.sale_price %}
+            {{ object.product.variation_set.first.sale_price }}
+            <small class='og-price'>{{ object.product.variation_set.first.price }}</small>
+            {% else %}
+
+            {{ object.product.variation_set.first.price }}
+            {% endif %}
+            <small>
+        </td>
+        <td>
+        <td class='text-right' style="cursor:pointer;"><a onclick="deleteWishlist(this)" data-id="{{ object.id }}">X</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </div>
+</table>
+{% endif %}
+<script>
+    function deleteWishlist(e) {
+
+        let id = e.dataset.id
+        e.closest('tr').remove()
+
+        fetch('', {
+            method: 'delete',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'id': id
+            }),
+            credentials: 'same-origin',
+        })
+    }
+</script>
+{% endblock %}

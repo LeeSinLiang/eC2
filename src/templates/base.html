@@ -1,0 +1,100 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
+
+  <title>{% block head_title %}eCommerce 2{% endblock %}</title>
+
+  {% include 'head_css.html' %}
+
+  <style>
+    {% block style %}
+
+    {% endblock %}
+  </style>
+
+
+
+</head>
+
+<body>
+  {% include 'navbar.html' %}
+
+  {% if messages %}
+
+  <div class='container'>
+    <div class='alert alert-success text-center alert-dismissible'>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+          aria-hidden="true">&times;</span></button>
+      {% for message in messages %}
+      <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p><br />
+      {% endfor %}
+    </div>
+
+  </div>
+  {% endif %}
+
+  {% block jumbotron %}
+
+  {% endblock %}
+  <div class="container">
+
+
+
+    {% block content %}
+
+    {% endblock %}
+
+
+  </div> <!-- /container -->
+  {% block nocontainer %}
+  {% endblock %}
+
+  {% include "javascript.html" %}
+  <script>
+    $(document).ready(function () {
+      {% block jquery3 %}
+      {% endblock %}
+    });
+
+  </script>
+  {% block jquerystatic %}
+  {% endblock %}
+  <script src="{% static 'js/custom.js' %}"></script>
+  <script>
+    $(document).ready(function () {
+      {% block jquery %}
+      {% endblock %}
+    });
+
+  </script>
+  <script>
+    $(document).ready(function () {
+      {% block jquery2 %}
+      {% endblock %}
+    });
+
+  </script>
+  <div class="clearfix"></div>
+</body>
+
+<footer>
+  <div class="footer">
+    <div class="container">
+      <p>&copy; 2019 eC2. All rights reserved | Design by <a href="http://www.github.com/LeeSinLiang"
+          onclick="javascript:window.open('http://www.github.com/LeeSinLiang','Github','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;">James
+          Lee Sin Liang</a></p>
+    </div>
+  </div>
+
+</footer>
+</html>
