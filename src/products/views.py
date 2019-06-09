@@ -24,13 +24,16 @@ from django.contrib import messages
 from rest_framework import generics
 from .serializers import CategorySerializer
 
+
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
+
 class CategoryDetailAPIView(generics.RetrieveAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
 
 class FilterMixin(object):
     filter_class = None
@@ -93,12 +96,14 @@ class FilterMixin(object):
         context['object_list'] = fqs
         return context
 
+
 class CategoryFilter(FilterSet):
-    title = CharFilter(field_name='title', lookup_expr='icontains', distinct=True)
+    title = CharFilter(field_name='title',
+                       lookup_expr='icontains', distinct=True)
     brand = CharFilter(field_name='brand__title',
-                            lookup_expr='icontains', distinct=True)
+                       lookup_expr='icontains', distinct=True)
     brand_id = CharFilter(field_name='brand__id',
-                             lookup_expr='icontains', distinct=True)
+                          lookup_expr='icontains', distinct=True)
     # (some_price__gte=somequery)
     min_price = NumberFilter(field_name='variation__sale_price',
                              lookup_expr='gte', distinct=True)
@@ -114,16 +119,17 @@ class CategoryFilter(FilterSet):
             'title',
         ]
 
+
 class CategoryListView(ListView):
     model = Category
     template_name = "products/category_list.html"
-    
 
     def get_queryset(self, *args, **kwargs):
         qs = super(CategoryListView, self).get_queryset(*args, **kwargs)
         qs = qs.filter(parent=None)
         print(qs)
         return qs
+
 
 class SubCategoryListView(ListView):
     model = Category
@@ -136,7 +142,6 @@ class SubCategoryListView(ListView):
         print(qs)
         return qs
 
-    
 
 class CategoryDetailView(FilterMixin, DetailView):
     model = Category
@@ -149,24 +154,20 @@ class CategoryDetailView(FilterMixin, DetailView):
             slug = self.kwargs.get('slug')
             obj = Category.objects.get(slug=slug)
             print('Hello')
-            
 
         elif self.kwargs.get('pk') is not None:
             pk = self.kwargs.get('pk')
             print(pk)
             obj = Category.objects.get(id=pk)
             print('Hello1')
-            
 
         elif self.kwargs.get('slug') is not None:
             slug = self.kwargs.get('slug')
             obj = Category.objects.get(slug=slug)
             print('Hello2')
-            
 
         print(obj)
         return obj
-
 
     def get_context_data(self, *args, **kwargs):
         context = super(CategoryDetailView, self).get_context_data(
@@ -186,13 +187,13 @@ class CategoryDetailView(FilterMixin, DetailView):
             except FieldError:
                 pass
 
-
-        context["filter_form"] = CategoryFilterForm(data=self.request.GET or None)
+        context["filter_form"] = CategoryFilterForm(
+            data=self.request.GET or None)
         print(context)
         context["object_list1"] = qs
         return context
 
-    
+
 class VariationListView(StaffRequiredMixin, ListView):
     model = Variation
     template_name = "products/variation_list.html"
@@ -232,17 +233,17 @@ class VariationListView(StaffRequiredMixin, ListView):
         raise Http404
 
 
-
 class ProductFilter(FilterSet):
-    title = CharFilter(field_name='title', lookup_expr='icontains', distinct=True)
+    title = CharFilter(field_name='title',
+                       lookup_expr='icontains', distinct=True)
     category = CharFilter(field_name='categories__title',
                           lookup_expr='icontains', distinct=True)
     category_id = CharFilter(field_name='categories__id',
                              lookup_expr='icontains', distinct=True)
     brand = CharFilter(field_name='brand__title',
-                            lookup_expr='icontains', distinct=True)
+                       lookup_expr='icontains', distinct=True)
     brand_id = CharFilter(field_name='brand__id',
-                             lookup_expr='icontains', distinct=True)
+                          lookup_expr='icontains', distinct=True)
     # (some_price__gte=somequery)
     min_price = NumberFilter(field_name='variation__sale_price',
                              lookup_expr='gte', distinct=True)
@@ -259,10 +260,12 @@ class ProductFilter(FilterSet):
             'title',
         ]
 
+
 class ProductFilter123(FilterSet):
     class Meta:
         model = Product
         fields = ['title', 'description']
+
 
 def product_list(request):
     qs = Product.objects.all()
@@ -271,6 +274,7 @@ def product_list(request):
         qs = Product.objects.all().order_by(ordering)
     f = ProductFilter(request.GET, queryset=Product.objects.all())
     return render(request, "products/product_list.html", {"object_list": f.qs})
+
 
 class ProductListView(FilterMixin, ListView):
     model = Product
@@ -339,17 +343,18 @@ class ProductDetailView(CartOrderMixin, DetailView):
             *args, **kwargs)
         instance = self.get_object()
         print(instance)
-        context["related"] = sorted(Product.objects.get_related(instance)[:3], key=lambda x: random.random())
+        context["related"] = sorted(Product.objects.get_related(instance)[
+                                    :3], key=lambda x: random.random())
         context['review'] = Review.objects.filter(
             product=self.get_object()).order_by('-pk')
         form = ReviewForm(self.request.POST)
         print('------')
         print(context)
         history = self.request.session.get("history_ids")
-		if history is None:
-			self.request.session["order_id"] = []
-		self.request.session["order_id"].append(self.get_object().id)
-			
+        if history is None:
+            self.request.session["history_ids"] = []
+        self.request.session["history_ids"].append(self.get_object().id)
+
         try:
             user = UserCheckout.objects.get(user=self.request.user)
         except:
