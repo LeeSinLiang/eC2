@@ -1,1 +1,1 @@
-web: gunicorn ecommerce2.wsgi --log-file -
+web: gunicorn --pythonpath src ecommerce2.wsgi
