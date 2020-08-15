@@ -139,11 +139,6 @@ STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, "staticfiles"),
 ]
 
-
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-DEFAULT_FILE_STORAGE = 'ecommerce2.settings.storage_backends.MediaStorage'
-
 AWS_ACCESS_KEY_ID = 'AKIAJISFDAMIW7HTBKZA'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'ec2-assets-888'
@@ -152,6 +147,11 @@ AWS_S3_OBJECT_PARAMETERS = {
 	'CacheControl': 'max-age=86400',
 }
 AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'ecommerce2.settings.storage_backends.MediaStorage'
+
 
 #Crispy FORM TAGs SETTINGS
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
