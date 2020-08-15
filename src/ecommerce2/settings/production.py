@@ -20,7 +20,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 from django.conf import settings
-import heroku
+import django_heroku
 if not settings.DEBUG:
 	import os
 
@@ -164,7 +164,8 @@ if not settings.DEBUG:
 	SITE_ID = 1
 	LOGIN_REDIRECT_URL = '/'
 
-	heroku.
+	django_heroku.settings(locals())
+
 
 
 
