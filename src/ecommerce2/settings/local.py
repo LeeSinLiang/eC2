@@ -196,4 +196,4 @@ BRAINTREE_PRIVATE = "c617aa593d30f8cdf85cbd26362ff4bf"
 BRAINTREE_MERCHANT_ID = "vpmt7qrmf9cj4ddn"
 BRAINTREE_ENVIRONEMNT = "Sandbox"
 
-django_heroku.settings(local())
+django_heroku.settings(locals())
