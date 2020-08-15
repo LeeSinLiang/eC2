@@ -31,7 +31,7 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
-    price = models.DecimalField(decimal_places=2, max_digits=100000)
+    price = models.DecimalField(decimal_places=2, max_digits=1000)
     active = models.BooleanField()
     slug = models.SlugField(max_length=120, unique=True, blank=True)
     brand = models.ForeignKey('Brand', on_delete=models.CASCADE, null=True)
