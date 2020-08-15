@@ -17,22 +17,94 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ImproperlyConfigured
 from django_filters import FilterSet, CharFilter, NumberFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from django.core.exceptions import FieldError
 from django.utils import timezone
 from django.contrib import messages
+from .filters import ProductFilter
+from .pagination import ProductPagination, CategoryPagination
 # Create your views here.
-from rest_framework import generics
-from .serializers import CategorySerializer
+from rest_framework import (
+    generics,
+    filters
+)
 
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.reverse import reverse as api_reverse
+
+from .serializers import (
+    CategorySerializer,
+    ProductSerializer,
+    ProductDetailSerializer,
+)
+
+class APIHomeView(APIView):
+	# authentication_classes = [SessionAuthentication]
+	# permission_classes = [IsAuthenticated]
+	def get(self, request, format=None):
+		data = {
+			# "auth": {
+			# 	"login_url":  api_reverse("auth_login_api", request=request),
+			# 	"refresh_url":  api_reverse("refresh_token_api", request=request), 
+			# 	"user_checkout":  api_reverse("user_checkout_api", request=request), 
+			# },
+			# "address": {
+			# 	"url": api_reverse("user_address_list_api", request=request),
+			# 	"create":   api_reverse("user_address_create_api", request=request),
+			# },
+			# "checkout": {
+			# 	"cart": api_reverse("cart_api", request=request),
+			# 	"checkout": api_reverse("checkout_api", request=request),
+			# 	"finalize": api_reverse("checkout_finalize_api", request=request),
+			# },
+			"products": {
+				"count": Product.objects.all().count(),
+				"url": api_reverse("products_api", request=request)
+			},
+			"categories": {
+				"count": Category.objects.all().count(),
+				"url": api_reverse("categories_api", request=request)
+			},
+			# "orders": {
+			# 	"url": api_reverse("orders_api", request=request),
+			# }
+		}
+		return Response(data)
 
 class CategoryListAPIView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = CategoryPagination
 
 
 class CategoryDetailAPIView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class ProductListAPIView(generics.ListAPIView):
+    # authentication_classes = [SessionAuthentication]
+    # permission_classes = [IsAuthenticated]
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter,
+        DjangoFilterBackend
+    ]
+    search_fields = ["title", "description"]
+    ordering_fields = ["title", "id"]
+    filter_class = ProductFilter
+    pagination_class = ProductPagination
+
+
+class ProductRetrieveAPIView(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductDetailSerializer
 
 
 class FilterMixin(object):
@@ -404,7 +476,7 @@ class ProductDetailView(CartOrderMixin, DetailView):
 
 
 def product_detail_view_func(request, slug, id):
-        #product_instance = Product.objects.get(id=id)
+        # product_instance = Product.objects.get(id=id)
     product_instance = get_object_or_404(Product, slug=slug)
     try:
         product_instance = Product.objects.get(slug=slug)

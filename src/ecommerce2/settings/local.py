@@ -25,14 +25,15 @@ SECRET_KEY = 'csqwlmc8s55o($rt6ozh7u+ui9zb-et00w$d90j8$^!nvj41_r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = []
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'yourgmail@gmail.com'
-EMAIL_HOST_PASSWORD = 'yourpassword'
+EMAIL_HOST_USER = 'ostuff114@gmail.com'
+EMAIL_HOST_PASSWORD = 'da@ostuffDa114'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
+EMAIL_USE_TLS = True    
+DEFAULT_FROM_EMAIL = 'Python ecommerce <hungrypy@gmail.com>'
+BASE_URL = '127.0.0.1:8000'
 ''' 
 If using gmail, you will need to
 unlock Captcha to enable Django 
@@ -61,12 +62,15 @@ INSTALLED_APPS = [
     'django_countries',
     'storages',
     #my apps
-    'newsletter',
     'products',
+    'newsletter',
     'carts',
     'orders',
     'utily',
 ]
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,6 +147,25 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+      'DEFAULT_AUTHENTICATION_CLASSES': (
+        #'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        # "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+    ),
+    
+    # 'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    "SEARCH_PARAM" : "q"
+}
+
+# REST_FRAMEWORK += {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+#     'PAGE_SIZE': 100
+# }
 
 STATIC_URL = '/static/'
 

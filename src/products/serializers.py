@@ -69,13 +69,13 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-	# url = serializers.HyperlinkedIdentityField(view_name='products_detail_api')
+	url = serializers.HyperlinkedIdentityField(view_name='products_detail_api')
 	variation_set = VariationSerializer(many=True)
 	image = serializers.SerializerMethodField()
 	class Meta:
 		model = Product
 		fields = [
-			# "url",
+			"url",
 			"id",
 			"title",
 			"image",

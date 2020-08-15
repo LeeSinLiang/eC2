@@ -9,8 +9,11 @@ from carts.views import *
 from orders.views import *
 from utily.views import WishListView, wishlisted
 from products.views import (
+    APIHomeView,
     CategoryListAPIView,
     CategoryDetailAPIView,
+    ProductListAPIView,
+    ProductRetrieveAPIView,
 )
 
 urlpatterns = [
@@ -37,8 +40,11 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('api/', APIHomeView.as_view(), name='api_home'),
     path('api/categories/', CategoryListAPIView.as_view(), name='categories_api'),
     path('api/categories/<pk>/', CategoryDetailAPIView.as_view(), name='category_detail_api'),
+    path('api/products/', ProductListAPIView.as_view(), name='products_api'),
+    path('api/products/<pk>/', ProductRetrieveAPIView.as_view(), name='products_detail_api'),
 ]
 
 if settings.DEBUG:

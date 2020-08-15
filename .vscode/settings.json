@@ -1,5 +1,4 @@
 {
-    "python.pythonPath": "env\\Scripts\\python.exe",
     "files.autoSave": "onFocusChange",
     "editor.formatOnSave": false,
     "python.linting.pylintEnabled": true,

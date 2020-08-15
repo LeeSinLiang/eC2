@@ -9,6 +9,11 @@
 </div>
 
 {% else %}
+<style>
+a.remove:hover {
+    color: red;
+}
+</style>
 <h1>Your WishList</h1>
 
 
@@ -31,8 +36,7 @@
             {% endif %}
             <small>
         </td>
-        <td>
-        <td class='text-right' style="cursor:pointer;"><a onclick="deleteWishlist(this)" data-id="{{ object.id }}">X</a>
+        <td style="cursor:pointer;"><a style="text-decoration: none;" class="remove" onclick="deleteWishlist(this)" data-id="{{ object.id }}">X</a>
         </td>
     </tr>
     {% endfor %}

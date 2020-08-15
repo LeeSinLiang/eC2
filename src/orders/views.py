@@ -3,10 +3,40 @@ from django.views.generic import FormView, CreateView, DetailView, ListView
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
+
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+
 from .forms import UserAddressForm, AddressForm
 from .models import UserAddress, UserCheckout, Order
 from .mixins import LoginRequiredMixin, CartOrderMixin
 # Create your views here.
+
+
+class UserCheckoutAPI(APIView):
+	permission_classes = [AllowAny]
+	def get(self, request, format=None):
+		data = self.get_checkout_data(user=request.user)
+		return Response(data)
+
+	def post(self, request, format=None):
+		data = {}
+		email = request.data.get("email")
+		if request.user.is_authenticated():
+			if email == request.user.email:
+				data = self.get_checkout_data(user=request.user, email=email)
+			else:
+				data = self.get_checkout_data(user=request.user)
+		elif email and not request.user.is_authenticated():
+			data = self.get_checkout_data(email=email)
+		else:
+			data = self.user_failure(message="Make sure you are authenticated or using a valid email.")
+		return Response(data)
+
 
 class OrderDetail(DetailView):
     model = Order

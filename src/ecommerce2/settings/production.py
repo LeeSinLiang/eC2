@@ -20,7 +20,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
 from django.conf import settings
-
+import heroku
 if not settings.DEBUG:
 	import os
 
@@ -36,17 +36,14 @@ if not settings.DEBUG:
 	# SECURITY WARNING: don't run with debug turned on in production!
 	DEBUG = False
 
-	ADMINS = (
-		("Justin", "codingforentrepreneurs@gmail.com"),
+	
 
-		)
-
-	ALLOWED_HOSTS = ['cfedeploy.webfactional.com', 'trydjango.com', 'www.trydjango.com']
-	#purchasing domain name http://name.com
+	
+	
 
 	EMAIL_HOST = 'smtp.gmail.com'
-	EMAIL_HOST_USER = 'yourgmail@gmail.com'
-	EMAIL_HOST_PASSWORD = 'yourpassword'
+	EMAIL_HOST_USER = 'ostuff114@gmail.com'
+	EMAIL_HOST_PASSWORD = 'da@ostuffDa114'
 	EMAIL_PORT = 587
 	EMAIL_USE_TLS = True
 
@@ -112,16 +109,14 @@ if not settings.DEBUG:
 	# Database
 	# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-	from .db_password import DBPASS
+	
 
 	DATABASES = {
-	    'default': {
-	        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-	        'NAME': "mvpland",
-	        'USER': "cfedeploy",
-	        'PASSWORD': DBPASS,
-	    }
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 
 	# Internationalization
@@ -168,6 +163,8 @@ if not settings.DEBUG:
 	REGISTRATION_AUTO_LOGIN = True
 	SITE_ID = 1
 	LOGIN_REDIRECT_URL = '/'
+
+	heroku.
 
 
 
