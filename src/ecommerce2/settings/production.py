@@ -24,17 +24,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = 'csqwlmc8s55o($rt6ozh7u+ui9zb-et00w$d90j8$^!nvj41_r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ostuff114@gmail.com'
-EMAIL_HOST_PASSWORD = 'da@ostuffDa114'
+EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True    
-DEFAULT_FROM_EMAIL = 'eC2'
-BASE_URL = 'https://pyec2.herokuapp.com/'
+EMAIL_HOST_USER = 'mangojamlee@gmail.com'
+EMAIL_HOST_PASSWORD = 's1p3fors4p5'
 ''' 
 If using gmail, you will need to
 unlock Captcha to enable Django 

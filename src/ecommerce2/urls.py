@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('registration.backends.default.urls')),
     path('category/', include('products.urls_categories')),
-    path('carts/', include('carts.urls')),
+    path('carts/', include('carts.urls')),  
     path('checkout/address/', AddressSelectFormView.as_view(), name='order_address'),
     path('checkout/add/', UserAddressCreateView.as_view(), name='user_address_create'),
     path('checkout/final/', CheckoutFinalView.as_view(), name='checkout_final'),
