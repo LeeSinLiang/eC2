@@ -71,6 +71,7 @@ INSTALLED_APPS = (
 	'registration',
 	#my apps
 	'newsletter',
+	'storages',
 )
 
 MIDDLEWARE_CLASSES = (
