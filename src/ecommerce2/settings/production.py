@@ -174,8 +174,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "staticfiles"),
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
-
 AWS_ACCESS_KEY_ID = 'AKIAJISFDAMIW7HTBKZA'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'ec2-assets-888'
