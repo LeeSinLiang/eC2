@@ -25,15 +25,15 @@ SECRET_KEY = 'csqwlmc8s55o($rt6ozh7u+ui9zb-et00w$d90j8$^!nvj41_r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'ostuff114@gmail.com'
 EMAIL_HOST_PASSWORD = 'da@ostuffDa114'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True    
-DEFAULT_FROM_EMAIL = 'Python ecommerce <hungrypy@gmail.com>'
-BASE_URL = '127.0.0.1:8000'
+DEFAULT_FROM_EMAIL = 'eC2'
+BASE_URL = 'https://pyec2.herokuapp.com/'
 ''' 
 If using gmail, you will need to
 unlock Captcha to enable Django 
