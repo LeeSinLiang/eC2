@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import django_heroku
+from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 #root of project
@@ -21,21 +22,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'csqwlmc8s55o($rt6ozh7u+ui9zb-et00w$d90j8$^!nvj41_r'
+SECRET_KEY = config('SECRET_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
-
-
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ostuff114@gmail.com'
-EMAIL_HOST_PASSWORD = 'da@ostuffDa114'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True    
-DEFAULT_FROM_EMAIL = 'eC2'
-BASE_URL = 'https://pyec2.herokuapp.com/'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USE_TLS = True
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 ''' 
 If using gmail, you will need to
 unlock Captcha to enable Django 
@@ -57,12 +56,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #third party apps
-    'storages',
     'crispy_forms',
     'django_filters',
     'registration',
     'rest_framework',
     'django_countries',
+    'storages',
     #my apps
     'products',
     'newsletter',
@@ -105,6 +104,10 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'ecommerce2.wsgi.application'
+
+
+# Database
+# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -165,14 +168,18 @@ REST_FRAMEWORK = {
 #     'PAGE_SIZE': 100
 # }
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "staticfiles"),
-# ]
+# STATIC_URL = '/static/'
 
-AWS_ACCESS_KEY_ID = 'AKIAJISFDAMIW7HTBKZA'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'ec2-assets-888'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN') % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
 	'CacheControl': 'max-age=86400',
 }
@@ -182,6 +189,9 @@ AWS_LOCATION = 'static'
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 DEFAULT_FILE_STORAGE = 'ecommerce2.settings.storage_backends.MediaStorage'
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
 #Crispy FORM TAGs SETTINGS
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -200,6 +210,6 @@ LOGIN_REDIRECT_URL = '/'
 BRAINTREE_PUBLIC = "g26z5tr86tqx3y6p"
 BRAINTREE_PRIVATE = "c617aa593d30f8cdf85cbd26362ff4bf"
 BRAINTREE_MERCHANT_ID = "vpmt7qrmf9cj4ddn"
-BRAINTREE_ENVIRONEMNT = "Sandbox"
+BRAINTREE_ENVIRONMENT = "sandbox"
 
 django_heroku.settings(locals())
