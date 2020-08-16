@@ -6,11 +6,10 @@ from django_countries.fields import CountryField
 
 import braintree
 
-if settings.DEBUG:
-	braintree.Configuration.configure(braintree.Environment.Sandbox,
-		merchant_id=settings.BRAINTREE_MERCHANT_ID,
-		public_key=settings.BRAINTREE_PUBLIC,
-		private_key=settings.BRAINTREE_PRIVATE)
+braintree.Configuration.configure(braintree.Environment.Sandbox,
+	merchant_id=settings.BRAINTREE_MERCHANT_ID,
+	public_key=settings.BRAINTREE_PUBLIC,
+	private_key=settings.BRAINTREE_PRIVATE)
 
 
 class UserCheckout(models.Model):
