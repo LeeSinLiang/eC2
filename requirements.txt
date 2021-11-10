@@ -26,7 +26,7 @@ pbd==0.9
 Pillow==8.3.2
 psycopg2==2.8.5
 pycodestyle==2.5.0
-Pygments==2.4.2
+Pygments==2.7.4
 PyJWT==1.7.1
 python-dateutil==2.8.1
 python-decouple==3.3
