@@ -3,6 +3,6 @@
 #### Project Details:
  - Framework: Django
  - Backend Language: Python
- - Frontend Language: Html, Css , Javascript, JQuery
+ - Frontend Language: Html, Css , Javascript
  - API equipped
  - Payment with Braintree
