@@ -3,7 +3,6 @@ from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from newsletter.views import *
-from ecommerce2.views import *
 from django.urls import path, include
 from carts.views import *
 from orders.views import *
@@ -20,7 +19,6 @@ urlpatterns = [
     # Examples:
     path('', home, name='home'),
     url(r'^contact/$', contact, name='contact'),
-    url(r'^about/$', about, name='about'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', admin.site.urls),
