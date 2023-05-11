@@ -102,7 +102,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'ecommerce2.wsgi.application'
+WSGI_APPLICATION = 'ecommerce2.wsgi.app'
 
 
 # Database
