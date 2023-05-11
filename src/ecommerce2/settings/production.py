@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import django_heroku
 from decouple import config, Csv
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -211,5 +210,3 @@ BRAINTREE_PUBLIC = "g26z5tr86tqx3y6p"
 BRAINTREE_PRIVATE = "c617aa593d30f8cdf85cbd26362ff4bf"
 BRAINTREE_MERCHANT_ID = "vpmt7qrmf9cj4ddn"
 BRAINTREE_ENVIRONMENT = "sandbox"
-
-django_heroku.settings(locals())
