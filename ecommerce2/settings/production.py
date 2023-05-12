@@ -15,8 +15,9 @@ import os
 import dj_database_url
 from decouple import config, Csv
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-#root of project
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+# root of project
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -43,34 +44,31 @@ https://accounts.google.com/displayunlockcaptcha
 '''
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
     # 'bootstrap_admin',
-    #django app
+    # django app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #third party apps
+    # third party apps
     'crispy_forms',
     'django_filters',
     'registration',
     'rest_framework',
     'django_countries',
     'storages',
-    #my apps
+    # my apps
     'products',
     'newsletter',
     'carts',
     'orders',
     'utily',
 ]
-
-
 
 
 MIDDLEWARE = [
@@ -109,15 +107,17 @@ WSGI_APPLICATION = 'ecommerce2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-DATABASES['default'] = dj_database_url.config()
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'URL': config('POSTGRES_URL'),
+#         'NAME': config('POSTGRES_DATABASE'),
+#         'USER': 'PGUSER',
+#         'PASSWORD': 'PGPASSWORD',
+#         'HOST': 'PGHOST',
+#     }
+# }
+DATABASES = {'default': dj_database_url.config(default=config('POSTGRES_URL'))}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -155,14 +155,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
-      'DEFAULT_AUTHENTICATION_CLASSES': (
-        #'rest_framework.authentication.BasicAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         # "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
     ),
 
     # 'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
-    "SEARCH_PARAM" : "q"
+    "SEARCH_PARAM": "q"
 }
 
 # REST_FRAMEWORK += {
@@ -176,14 +176,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
+STATIC_ROOT = os.path.join(os.path.dirname(
+    BASE_DIR), "static_in_env", "static_root")
 
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = config('AWS_S3_CUSTOM_DOMAIN') % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
-	'CacheControl': 'max-age=86400',
+    'CacheControl': 'max-age=86400',
 }
 AWS_LOCATION = 'static'
 
@@ -195,11 +196,11 @@ DEFAULT_FILE_STORAGE = 'ecommerce2.settings.storage_backends.MediaStorage'
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
-#Crispy FORM TAGs SETTINGS
+# Crispy FORM TAGs SETTINGS
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 
-#DJANGO REGISTRATION REDUX SETTINGS
+# DJANGO REGISTRATION REDUX SETTINGS
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
 SITE_ID = 1
@@ -208,9 +209,7 @@ LOGIN_REDIRECT_URL = '/'
 # django-storages
 
 
-
 BRAINTREE_PUBLIC = "g26z5tr86tqx3y6p"
 BRAINTREE_PRIVATE = "c617aa593d30f8cdf85cbd26362ff4bf"
 BRAINTREE_MERCHANT_ID = "vpmt7qrmf9cj4ddn"
 BRAINTREE_ENVIRONMENT = "sandbox"
-
