@@ -107,17 +107,18 @@ WSGI_APPLICATION = 'ecommerce2.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'URL': config('POSTGRES_URL'),
-#         'NAME': config('POSTGRES_DATABASE'),
-#         'USER': 'PGUSER',
-#         'PASSWORD': 'PGPASSWORD',
-#         'HOST': 'PGHOST',
-#     }
-# }
-DATABASES = {'default': dj_database_url.config(default=config('POSTGRES_URL'))}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': config('POSTGRES_URL'),
+        'NAME': config('POSTGRES_DATABASE'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('POSTGRES_HOST'),
+        'PORT': 5432,
+    }
+}
+# DATABASES = {'default': dj_database_url.config(default=config('POSTGRES_URL'))}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -145,7 +146,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False # temporary solution
 
 
 # Static files (CSS, JavaScript, Images)
