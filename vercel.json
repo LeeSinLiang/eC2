@@ -2,8 +2,8 @@
 	"version": 2,
 	"builds": [
 	  {
-		"src": "ecommerce2/vercel-python-wsgi.py",
-		"use": "@vercel/python",
+		"src": "ecommerce2/wsgi.py",
+		"use": "@vercel/vercel-python-wsgi.py",
 		"config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
 	  }
 	],
