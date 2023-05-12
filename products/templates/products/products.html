@@ -1,0 +1,16 @@
+<div class='row'>
+    {% for product in object_list %}
+    {% if col_class_set_xs %}
+    <div class='{{ col_class_set_xs }} {{ col_class_set }} {{ col_class_set_2 }}'>
+        {% include "products/product_thumbnail.html" with product=product price="True" style=style %}
+    </div>
+    {% else %}
+    <div class='col-xs-4 {{ col_class_set }} {{ col_class_set_2 }}'>
+        {% include "products/product_thumbnail.html" with product=product price="True" %}
+    </div>
+    {% endif %}
+    {% if col_class_set is None %}
+        {% cycle '' '' '</div><div class="row">' %}
+    {% endif %}
+    {% endfor %}
+</div>

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+<style>
+{% block style %}
+{% endblock %}
+</style>
+{% block content %}
+{% if object %}<h2>Category: {{ object }}</h2><a href="{% url 'products:products' %}">All Products</a>{% else %}<h2>Categories&nbsp;<small><a href="{% url 'products:products' %}">All Products</a></small></h2>{% endif %}<br>
+<div class='row'>
+    {% for product in object_list %}
+    <div class='col-xs-6 col-sm-4 col-md-3'>
+            <div class="thumbnail text-center" style="">
+                {% if product.background_image %}
+                <div class="contain">
+                    <img src="{{ product.background_image.url }}" alt="{{ product }} Image" style="width: 100%; height: 120px;;"></img>
+                    <div class="center-title">
+                    <h3><a href="{% if product.category_set.all.count < 1 %}{% url 'category_detail_id' product.id %}{% else %}{{ product.get_absolute_url }}{% endif %}" class="text-white">{{ product.title }}</a></h3>
+                    {% if price == "True" %}
+                    {{ product.variation_set.first.get_html_price }}
+                    {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <h4><a href='{{ product.get_absolute_url }}'>{{ product.title }}</a></h4>            
+                {% if price == "True" %}
+                {{ product.variation_set.first.get_html_price }}
+                {% endif %}
+                {% endif %}
+            </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+html {
+    font: 2em sans-serif;
+    font-size: 100%;
+}
+
+body {
+    background-color: #fff !important;
+}
+
+img#img {
+    height: 150px;
+}
+
+/* img.slide-img {
+    height: 370px !important;
+} */
+
+span.price {
+    font-weight: 400px !important;
+    font-size: 16px;
+}
+
+span.sale-price {
+    font-weight: 400px !important;
+    font-size: 18px;
+}
+
+span.og-price {
+    font-size: 14px;
+}
+
+.text-black {
+    color: black;
+}
+
+.text-white {
+    color: white;
+}
+
+a.text-white:hover {
+    color: lightblue;
+    text-decoration: underline;
+}
+
+@media only screen and (max-width: 500px) {
+    img#img {
+        margin-top: 22%;
+        height: auto !important;
+        max-height: 150px !important;
+    }  
+} 

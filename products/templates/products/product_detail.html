@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+<style>
+	{% block style %}	
+	@media (max-width:991px){
+	.single-left {
+		width: 70%;
+		margin: 0 auto;
+	}
+	}
+
+	a.wishlist:hover {
+		color: red;
+	}
+
+	a.wishlist::before {
+		color: transparent;
+	}
+
+	a.wishlist {
+		color: black;
+		font-size: 25px;
+	}
+
+		{% endblock %}
+</style>
+<script>
+	{% block jquery %}
+
+
+	function setPrice() {
+		var price = $(".variation_select option:selected").attr("data-price")
+		console.log(price)
+		var sale_price = $(".variation_select option:selected").attr("data-sale-price")
+		console.log(sale_price)
+		if (sale_price != "" && sale_price != "None" && sale_price != null || sale_price != price) {
+			$("#price").html("<h3>" + sale_price + " <small class='og-price'>" + price + "</small></h3>");
+		} else {
+			$("#price").html(price);
+		}
+	}
+	setPrice()
+
+	$(".variation_select").change(function () {
+		setPrice()
+		// var img = $(".variation_select option:selected").attr("data-img")
+		// $("img").attr("src", img);
+
+	})
+
+
+
+	// ajax add to cart
+
+	$("#submit-btn").click(function (event) {
+		event.preventDefault();
+		var formData = $("#add-form").serialize();
+		console.log(formData);
+		$.ajax({
+			type: "GET", // "POST"
+			url: "{% url 'cart' %}",
+			data: formData,
+			success: function (data) {
+				showFlashMessage(data.flash_message);
+				updateCartItemCount();
+			},
+			error: function (response, error) {
+				// console.log(response)
+				// console.log(error)
+				$("#add-form").submit()
+			}
+		})
+
+		// $("#add-form").submit()
+
+	})
+
+
+
+	{% endblock %}
+</script>
+<script>
+	{% block jquery2 %}
+	// Can also be used with $(document).ready()
+	
+	$('.flexslider').flexslider({
+		animation: "slide",
+		controlNav: "thumbnails"
+	});
+	
+	$("#rateYo").rateYo({
+		starWidth: "35px",
+		fullStar: true
+	});  
+	{% endblock %}
+</script>
+<script>
+	{% block jquery3 %}
+	$(".product-carousel").flexisel({
+		visibleItems: 4,
+		animationSpeed: 1000,
+		autoPlay: true,
+		autoPlaySpeed: 3000,
+		pauseOnHover: true,
+		enableResponsiveBreakpoints: true,
+		responsiveBreakpoints: {
+			portrait: {
+				changePoint: 480,
+				visibleItems: 2
+			},
+			landscape: {
+				changePoint: 640,
+				visibleItems: 3
+			},
+			tablet: {
+				changePoint: 768,
+				visibleItems: 3
+			}
+		}
+	});
+	{% endblock %}
+</script>
+{% block jquerystatic %}
+<!-- flexslider -->
+<script defer src="{% static 'js/jquery.flexslider.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
+<!-- Latest compiled and minified CSS -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+<!-- zooming-effect -->
+<script src="{% static 'js/imagezoom.js' %}"></script>
+{% endblock %}
+{% block nocontainer %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link href="{% static 'css/ratings.css' %}" rel="stylesheet">
+<!-- <div class='row'> -->
+<div class="heads-up">
+	<div class="container">
+		<div class='col-md-5'>
+
+
+			{% if object.get_image_url %}
+			<div class="col-sm-12 single-left" style="margin-bottom: 0px;">
+				<div class="flexslider">
+					<ul class="slides">
+						{% for obj in object.productimage_set.all %}
+						<li data-thumb="{{ obj.image.url }}">
+							<div class="thumb-image"> <img src="{{ obj.image.url }}" data-imagezoom="true" class="img-responsive" alt="">
+							</div>
+						</li>
+						<!-- <li data-thumb="images/b.jpg">
+						<div class="thumb-image"> <img src="images/b.jpg" data-imagezoom="true" class="img-responsive" alt=""> </div>
+					</li>
+					<li data-thumb="images/c.jpg">
+					<div class="thumb-image"> <img src="images/c.jpg" data-imagezoom="true" class="img-responsive" alt=""> </div>
+					</li>  -->
+
+						{% endfor %}
+					</ul>
+				</div>
+				<link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" media="screen" />
+			</div>
+			{% endif %}
+
+		</div>
+
+		<!-- Product Sidebar -->
+		<div class='col-md-7 single-right'>
+			<div class="row">
+				<div class="col-sm-6" style="float: left;">
+					<h2>{{ object.title }}</h2>
+				</div>
+				<div class="col-sm-4" style="margin-top: 20px;">
+					<a href="{% url 'wishlisted' object.pk %}" class="wishlist"><i class="far fa-heart"></i></a>
+				</div>
+			</div>
+			<form id='add-form' method='GET' action="{% url 'cart' %}">
+				<p id='jquery-message' class='lead'>
+
+				</p>
+				{% if object.variation_set.count > 1 %}
+				<h3 id='price'>{{ object.variation_set.first.price }}&nbsp;{{ object.review_set.first.average_ratings}}&nbsp;<i class="fas fa-star" style="color: gold; font-size: 80%;"></i>&nbsp;<small><a href="#reviews"> {{ review.count }}</a></small></h3>
+
+				<select name='item' class='form-control variation_select'>
+					{% for vari_obj in object.variation_set.all %}
+					<!-- <option data-img="http://www.spirit1059.com/pics/Feeds/Articles/2015611/118317/Beach.jpg" data-price="{{ vari_obj.price }}" value="{{ vari_obj.id }}">{{ vari_obj }}</option> -->
+					<option data-sale-price="{{ vari_obj.sale_price }}" data-price="{{ vari_obj.price }}" value="{{ vari_obj.id }}">{{ vari_obj }}</option>
+					{% endfor %}
+				</select>
+
+				{% else %}
+				<input type="hidden" name='item' value='{{ object.variation_set.first.id }}' />
+				<h3 id='price'>{% if object.variation_set.first.sale_price != object.variation_set.first.price %}
+					{{ object.variation_set.first.sale_price }}
+					<small class='og-price'>{{ object.variation_set.first.price }}</small>
+					{% else %}
+
+					{{ object.variation_set.first.price }}
+					{% endif %}
+					{{ object.review_set.first.average_ratings}}&nbsp;<i class="fas fa-star" style="color: gold; font-size: 80%;"></i>&nbsp;
+					<small><a href="#reviews"> {{ review.count }} Reviews</a></small>
+				</h3>
+
+
+				{% endif %}
+				<br />
+				<input class='form-control' type='number' name='qty' value='1' />
+				<br />
+				<input id='submit-btn' type='submit' value='Add to Cart' class='btn btn-default cn' />
+			</form>
+			<br />
+			<hr />
+			<p>
+				Share<br />
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">
+					<i style="font-size: 250%" class="fab fa-facebook"></i></a>
+
+				<a href="#">
+					<i style="font-size: 250%" class="fab fa-twitter-square"></i></a>
+			</p>
+
+			<hr />
+			<!-- <h4>Related Products</h4>
+
+			<div class='row'>
+				{% for product in related %}
+
+				<div class='col-xs-6'>
+					{% include "products/product_thumbnail.html" with product=product price="True" %}
+				</div>
+				{% cycle '' '</div><div class="row">' %}
+				{% endfor %}
+
+			</div> -->
+
+
+		</div>
+	</div>
+</div>
+	<!-- End Product Sidebar -->
+
+<!-- Description and Ratings -->
+<div class="description-ratings">
+	<div class="container">
+		<p class='lead'>
+			{% if object.description %}{{ object.description }}{% endif %}
+		</p>
+		<br>
+		<br>
+		<div id="reviews">
+			<h2>Review</h2>
+			{% if form is not None %}
+			<form action="" method="post">
+				{% csrf_token %}
+				<div class="form-group">
+					<div class="controls">
+						<div id="rateYo"></div>
+					</div>
+				</div>
+				<div class="row">
+				<div class="col-sm-6">
+				<div id="div_id_content" class="form-group">
+					<div class="controls ">
+						<textarea name="content" cols="40" rows="10" class="textarea form-control" required id="id_content"></textarea>
+					</div>
+				</div>
+				</div>
+				</div>
+				<div class="clearfix"></div>
+				<button type="submit" class="btn btn-primary">Add Review</button>
+			</form>
+			{% endif %}
+			<br>
+			{% for r in review %}
+			<div id="rate" data-rateyo-rating="{{ r.ratings }}" data-rateyo-read-only="true"></div>
+			<p class="user">User: {{ r.user }}</p>
+			<p class="content">{{ r.content }}</p>
+			{% empty %}
+			<h4>Sorry, this product hasn't had any review, yet.</h4>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="related-product">
+					<h2 class="section-title text-center">Related Products</h2>
+					<ul class="product-carousel">
+						{% for product in related %}
+						<li>
+							<div class="single-product">
+								<div class="product-f-image thumbnail text-center">
+									<a href='{{ product.get_absolute_url }}'><img id='img' class='img-responsive' src='{{ product.get_image_url }}' /></a><br />
+									<div class="product-hover">
+										<a href="{{ product.get_absolute_url }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+									</div>
+								</div>
+
+								<h4><a href="{{ product.get_absolute_url }}">{{ product }}</a></h4>
+
+								<div class="shelfItem">
+									<p class="flexisel">{{ product.variation_set.first.get_html_price }}</p>
+								</div>
+							</div>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+.text-align-center {
+	text-align: center;
+}
+
+.og-price {
+	color:red;
+	text-decoration:line-through;
+}
+
+.fa-navbar-cart {
+	font-size: 18px;
+    vertical-align: middle;
+}
+
+
+.container-alert-flash {
+	position: absolute;
+    top: 10px;
+    z-index: 50000;
+    width: 100%;
+    right: 0%;
+    margin: 0px;
+    display:none;
+}
+
+
+#img-1 {
+    max-height: 135px;
+}
+
+.contain {
+    position: relative;
+    text-align: center;
+    color: #FFF;
+}
+
+.center-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

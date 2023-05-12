@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<script>
+	{% block jquery2 %}
+	$(".product-carousel").flexisel({
+		visibleItems: 4,
+		animationSpeed: 1000,
+		autoPlay: true,
+		autoPlaySpeed: 3000,
+		pauseOnHover: true,
+		enableResponsiveBreakpoints: true,
+		responsiveBreakpoints: {
+			portrait: {
+				changePoint: 480,
+				visibleItems: 2
+			},
+			landscape: {
+				changePoint: 640,
+				visibleItems: 3
+			},
+			tablet: {
+				changePoint: 768,
+				visibleItems: 3
+			}
+		}
+	});
+	{% endblock %}
+</script>
+{% block head_title %}Welcome | {{ block.super }}{% endblock %}
+{% block jquerystatic %}
+<script type="text/javascript" src="{% static 'js/jquery.flexisel.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bxslider.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/script.slider.js' %}"></script>
+{% endblock %}
+<style>
+	{% block style %}
+
+	body {
+		background-color: #eaeded !important;
+	}
+
+	.navbar-static-top {
+		margin-bottom: 0px !important;
+	}
+
+	.jumbotron {
+		background-color: #5ACDFF;
+
+		color: {
+				{
+				featured_image.color
+			}
+		}
+
+		;
+
+		{% if featured_image.make_image_background %}
+
+		background-image: url("{{ featured_image.image.url }}");
+		background-repeat: no-repeat;
+		background-color: #fff;
+		background-size: cover;
+		background-position-y: -272px;
+
+		{% endif %}
+
+		{% endblock %}
+</style>
+
+
+
+{% block jumbotron %}
+{% if featured_image.count == 1 %}
+<div class="jumbotron">
+	<div class="container">
+		<div class="row">
+			<div class='col-sm-6{% if featured_image.text_right %} pull-left{% else %} text-center {% endif %}'>
+				<h1>{{ featured_image.product.title }}</h1>
+				<p>{{ featured_image.text }}</p>
+				<p>
+					<a class="btn btn-lg btn-primary" href="{{ featured_image.product.get_absolute_url }}" role="button">More Details
+					</a>
+				</p>
+			</div>
+			{% if not featured_image.make_image_background %}
+			<div class='col-sm-6'>
+				<img src="{{ featured_image.image.url }}" class='img-responsive' />
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+{% elif featured_image.count > 1 %}
+<div class="slider-area">
+		<!-- Slider -->
+		<div class="block-slider block-slider4">
+			<ul class="" id="bxslider-home4">
+				{% for fimg in featured_image %}
+				<li>
+					<img src="{{ fimg.image.url }}" alt="Slide" class="slide-img img-responsive">
+					<div class="caption-group">
+						<h2 class="caption title">
+							{{ fimg.product.title }}
+						</h2>
+						<h4 class="caption subtitle">{% if fimg.text %}{{ fimg.text }}{% endif %}</h4>
+						<a class="caption button-radius" href="{{ fimg.product.get_absolute_url }}"><span class="icon"></span>Shop now</a>
+					</div>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<!-- ./Slider -->
+</div> <!-- End slider area -->
+{% endif %}
+{% endblock %}
+{% block nocontainer %}
+<link rel="stylesheet" href="{% static 'css/cus.css' %}">
+	<!-- <h3>Latest Products</h3> -->
+	{# include "products/products.html" with object_list=products col_class_set="col-sm-2" #}
+<div class="container">
+	<div class="show-products">
+		<div class="show-products-pd">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="latest-product">
+						<h2 class="section-title text-left">Latest Products</h2>
+						<ul class="product-carousel">
+							{% for lp in latestproduct %}
+							<li>
+								<div class="single-product">
+									<div class="product-f-image thumbnail text-center">
+										<a href='{{ lp.get_absolute_url }}'><img id='img' class='img-responsive' src='{{ lp.get_image_url }}' /></a><br />
+										<div class="product-hover">
+											<a href="{{ lp.get_absolute_url }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+										</div>
+									</div>
+
+									<h4><a href="{{ lp.get_absolute_url }}">{{ lp }}</a></h4>
+
+									<div class="shelfItem">
+										{% if lp.review_set.first.average_ratings %}<p style="font-size: 15px;">{{ lp.review_set.first.average_ratings }}&nbsp;<i class="fas fa-star" style="color: gold;"></i></p>{% endif %}
+										<p class="flexisel">{{ lp.variation_set.first.get_html_price }}</p>
+									</div>
+								</div>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class='row'>
+	<div class="container">
+		<!-- {% include "products/products.html" with object_list=products2 col_class_set="col-sm-2" %} -->
+		<div class="show-products">
+			<div class="show-products-pd">
+				<h2 class="section-title text-left">Featured Products</h2>
+				<div class="row">
+					{% for obj in products2 %}
+					<div class="col-sm-3 single-product">
+						<div class="product-f-image thumbnail text-center">
+							{% if obj.upload_to_jumbotron is True %}
+								<a href='{{ obj.product.get_absolute_url }}'><img id='img' class='img-responsive' src='{{ obj.product.get_image_url }}' /></a><br />
+							{% else %}
+								<a href='{{ obj.product.get_absolute_url }}'><img id='img' class='img-responsive' src='{{ obj.image.url }}' /></a><br />
+							{% endif %}
+							<div class="product-hover">
+								<a href="{{ obj.product.get_absolute_url }}" class="view-details-link"><i class="fa fa-link"></i> See details</a>
+							</div>
+						</div>
+						<h4 style="margin-bottom: 2%;"><a href="{{ obj.product.get_absolute_url }}">{{ obj.product }}</a></h4>
+						<div class="shelfItem">
+							{% if obj.product.review_set.first.average_ratings %}<p style="font-size: 15px;margin-bottom: 0px !important;">{{ obj.product.review_set.first.average_ratings }}&nbsp;<i class="fas fa-star" style="color: gold;"></i></p>{% endif %}
+							<p class="flexisel">{{ obj.product.variation_set.first.get_html_price }}</p>
+						</div>
+					</div>
+					{% cycle '' '' '</div><div class="row">' %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="others">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="show-products">
+					<div class="show-products-pd">
+						<div class="single-product-widget">
+							<h2 class="product-wid-title">Top Sellers</h2>
+							{% for tp in topselller %}
+							<div class="single-wid-product">
+								<a href='{{ tp.product.get_absolute_url }}'><img class='product-thumb' src='{{ tp.product.get_image_url }}' /></a>
+								<h2><a href="{{ tp.product.get_absolute_url }}" style="color:blue">{{ tp.product }}</a></h2>
+								<div class="product-wid-rating">
+										<!-- <i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i> -->
+										{% if tp.product.review_set.first.average_ratings %}{{ tp.product.review_set.first.average_ratings }}&nbsp;<i class="fas fa-star"></i>{% endif %}
+									</div>
+								<div class="product-wid-price">
+									{{ tp.product.variation_set.first.get_html_price }}
+								</div>               
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="show-products">
+					<div class="show-products-pd">
+						<div class="single-product-widget">
+							<h2 class="product-wid-title">Recently Viewed</h2>
+							{% for hs in history %}
+							<div class="single-wid-product">
+								<a href='{{ hs.get_absolute_url }}'><img class='product-thumb' src='{{ hs.get_image_url }}' /></a>
+								<h2><a href="{{ hs.get_absolute_url }}" style="color:blue">{{ hs }}</a></h2>
+								<div class="product-wid-rating">
+										<!-- <i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i> -->
+										{% if hs.review_set.first.average_ratings %}{{ hs.review_set.first.average_ratings }}&nbsp;<i class="fas fa-star"></i>{% endif %}
+									</div>
+								<div class="product-wid-price">
+									{{ hs.variation_set.first.get_html_price }}
+								</div>               
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

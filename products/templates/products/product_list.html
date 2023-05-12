@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+<script>
+{% block jquery %}
+$(".select").change(function () {
+    $("#submit").click();
+})
+{% endblock %}
+</script>
+{% block content %}
+{% if filter_form %}
+<div class='col-sm-2'>
+    <form method="GET" action="{% url 'products:products' %}">
+        <div class="form-group">
+            <label>Sort</label>
+            <select name="sort" id="" style="" class="select form-control">
+            {% if request.GET.sort is None or request.GET.sort == "" %}
+            <option value="">Sort</option>
+            <option value="-variation__sold_bill">Popular</option>
+            <option value="variation__sold_bill">Least Popular</option>
+            <option value="-id">Latest</option>
+            <option value="id">Oldest</option>
+            {% elif request.GET.sort == '-variation__sold_bill' %}
+            <option value="-variation__sold_bill">Popular</option>
+            <option value="">Sort</option>
+            <option value="variation__sold_bill">Least Popular</option>
+            <option value="-id">Latest</option>
+            <option value="id">Oldest</option>
+            {% elif request.GET.sort == 'variation__sold_bill' %}
+            <option value="variation__sold_bill">Least Popular</option>
+            <option value="">Sort</option>
+            <option value="-variation__sold_bill">Popular</option>
+            <option value="-id">Latest</option>
+            <option value="id">Oldest</option>
+            {% elif request.GET.sort == '-id' %}
+            <option value="-id">Latest</option>
+            <option value="">Sort</option>
+            <option value="-variation__sold_bill">Popular</option>
+            <option value="variation__sold_bill">Least Popular</option>
+            <option value="id">Oldest</option>
+            {% elif request.GET.sort == 'id' %}
+            <option value="id">Oldest</option>
+            <option value="">Sort</option>
+            <option value="-variation__sold_bill">Popular</option>
+            <option value="variation__sold_bill">Least Popular</option>
+            <option value="-id">Latest</option>
+            {% endif %}
+            </select>
+        </div>
+        <button type="submit" style="display:none;" id="submit"></button>
+        {{ filter_form|crispy }}
+        <!-- <input type='hidden' name='q' value='{{ request.GET.q }}' /> -->
+        <input type='submit' value='Apply Filter' class='btn btn-default'>
+
+    </form>
+
+    <a href="{% url 'products:products' %}">Clear Filters</a>
+</div>
+{% endif %}
+<div class='col-sm-10'>
+<div class="row">
+<div class="col-sm-10">
+<h1 style="float: left;">All Products <small><a href='{% url "categories" %}'>Categories</a></small></h1>
+</div>
+{% if filter_form %}
+<!-- <div class="col-sm-2">
+<form action="" method="get">
+<div class="form-group">
+<select name="sort" id="" style="float: right;margin-top: 11px;" class="select form-control">
+<option value="">Sort</option>
+<option value="-variation__sold_bill">Popular</option>
+<option value="variation__sold_bill">Least Popular</option>
+<option value="-id">Latest</option>
+<option value="id">Oldest</option>
+</select>
+</div>
+<button type="submit" style="display:none;" id="submit"></button>
+</form>
+</div> -->
+{% endif %}
+</div>
+<br>
+<div class="clearfix"></div>
+{% if product_list.count <= 0 %}
+
+Nothing found
+
+{% else %}
+{% if filter_form %}
+{% include "products/products.html" with object_list=object_list row="row" col_class_set_xs="col-xs-6" col_class_set="col-sm-6" col_class_set_2="col-md-4" style="height: 230px !important;" %}
+{% else %}
+{% include "products/products.html" with object_list=object_list row="row" col_class_set_xs="col-xs-6" col_class_set="col-sm-6" col_class_set_2="col-md-4" %}
+{% endif %}
+{% endif %}
+
+</div>
+{% endblock %}
